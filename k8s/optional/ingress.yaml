@@ -4,104 +4,141 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at
 # http://oss.oracle.com/licenses/upl.
 #
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sockshop-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: ${SOCKSHOP_BACKEND:=core}.${SOCKSHOP_DOMAIN:=sockshop.helidon.io}
+  - host: socks.oracle-poc.providus.rs
     http:
       paths:
-      - backend:
-          serviceName: front-end
-          servicePort: 80
-  - host: jaeger.${SOCKSHOP_BACKEND:=core}.${SOCKSHOP_DOMAIN:=sockshop.helidon.io}
-    http:
-      paths:
-      - backend:
-          serviceName: jaeger-query
-          servicePort: 16686
-  - host: api.${SOCKSHOP_BACKEND:=core}.${SOCKSHOP_DOMAIN:=sockshop.helidon.io}
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: front-end
+              port:
+                number: 80
+  - host: api-socks.oracle-poc.providus.rs
     http:
       paths:
         - path: /carts
+          pathType: Prefix
           backend:
-            serviceName: carts
-            servicePort: 80
+            service:
+              name: carts
+              port:
+                number: 80
         - path: /catalogue
+          pathType: Prefix
           backend:
-            serviceName: catalogue
-            servicePort: 80
+            service:
+              name: catalogue
+              port:
+                number: 80
         - path: /orders
+          pathType: Prefix
           backend:
-            serviceName: orders
-            servicePort: 80
+            service:
+              name: orders
+              port:
+                number: 80
         - path: /paymentAuth
+          pathType: Prefix
           backend:
-            serviceName: payment-http
-            servicePort: 80
+            service:
+              name: payment-http
+              port:
+                number: 80
         - path: /shipping
+          pathType: Prefix
           backend:
-            serviceName: shipping-http
-            servicePort: 80
+            service:
+              name: shipping-http
+              port:
+                number: 80
         - path: /login
+          pathType: Prefix
           backend:
-            serviceName: user
-            servicePort: 80
+            service:
+              name: user
+              port:
+                number: 80
         - path: /register
+          pathType: Prefix
           backend:
-            serviceName: user
-            servicePort: 80
+            service:
+              name: user
+              port:
+                number: 80
         - path: /customers
+          pathType: Prefix
           backend:
-            serviceName: user
-            servicePort: 80
+            service:
+              name: user
+              port:
+                number: 80
         - path: /addresses
+          pathType: Prefix
           backend:
-            serviceName: user
-            servicePort: 80
+            service:
+              name: user
+              port:
+                number: 80
         - path: /cards
+          pathType: Prefix
           backend:
-            serviceName: user
-            servicePort: 80
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$$2
-  name: mp-ingress
-spec:
-  rules:
-  - host: mp.${SOCKSHOP_BACKEND:=core}.${SOCKSHOP_DOMAIN:=sockshop.helidon.io}
-    http:
-      paths:
-        - path: /swagger(/|$)(.*)
-          backend:
-            serviceName: swagger
-            servicePort: 80
-        - path: /carts(/|$)(.*)
-          backend:
-            serviceName: carts
-            servicePort: 80
-        - path: /catalogue(/|$)(.*)
-          backend:
-            serviceName: catalogue
-            servicePort: 80
-        - path: /orders(/|$)(.*)
-          backend:
-            serviceName: orders
-            servicePort: 80
-        - path: /payments(/|$)(.*)
-          backend:
-            serviceName: payment-http
-            servicePort: 80
-        - path: /shipping(/|$)(.*)
-          backend:
-            serviceName: shipping-http
-            servicePort: 80
-        - path: /users(/|$)(.*)
-          backend:
-            serviceName: user
-            servicePort: 80
+            service:
+              name: user
+              port:
+                number: 80
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /$$2
+#  name: mp-ingress
+#spec:
+#  rules:
+#  - host: mp-socks.oracle-poc.providus.rs
+#    http:
+#      paths:
+#        - path: /swagger(/|$)(.*)
+#          backend:
+#            service: swagger
+#            port:
+#              number: 80
+#        - path: /carts(/|$)(.*)
+#          backend:
+#            service: carts
+#            port:
+#              number: 80
+#        - path: /catalogue(/|$)(.*)
+#          backend:
+#            service: catalogue
+#            port:
+#              number: 80
+#        - path: /orders(/|$)(.*)
+#          backend:
+#            service: orders
+#            port:
+#              number: 80
+#        - path: /payments(/|$)(.*)
+#          backend:
+#            service: payment-http
+#            port:
+#              number: 80
+#        - path: /shipping(/|$)(.*)
+#          backend:
+#            service: shipping-http
+#            port:
+#              number: 80
+#        - path: /users(/|$)(.*)
+#          backend:
+#            service: user
+#            port:
+#              number: 80

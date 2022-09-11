@@ -33,10 +33,11 @@ spec:
         app: front-end
     spec:
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
       - name: front-end
-        image: weaveworksdemos/front-end:0.3.12
+        image: providus/oracle-poc-front-end:latest
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 100m
